@@ -1,0 +1,129 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--font-color);
+}
+
+/*  Var declaration  */
+:root {
+    --arrow-size: 3rem;
+    --img-gap: .25rem;
+    --font-color: #e5e5e5;
+    --background-color: #141414;
+}
+
+/* =====Slider===== */
+
+/* Header */
+.categorie {
+    display: flex;
+    flex-direction: column;
+}
+
+.categorie-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: .5rem calc(var(--img-gap) * 2 + var(--arrow-size));
+}
+
+.categorie-name {
+    font-size: 1.5rem;
+}
+
+.progress-bar {
+    display: flex;
+    gap: 0.2rem;
+}
+
+.progress-item {
+    width: 1rem;
+    height: .1rem;
+    background-color: var(--font-color);
+    opacity: 0.5;
+}
+
+.progress-item.active {
+    opacity: 1;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.slider {
+    --slider-index: 0;
+    --items-per-screen: 3;
+    flex: 1 1;
+    display: flex;
+    transform: translateX(calc(var(--slider-index) * (-100%)));
+    transition: transform 300ms ease-in-out;
+    margin: 0 var(--img-gap);
+}
+
+/* FILM */
+.slider-element {
+    padding: var(--img-gap);
+    max-width: calc(100% / var(--items-per-screen));
+    aspect-ratio: 16/9;
+    flex: 0 0 calc(100% / var(--items-per-screen));
+    border-radius: 1rem;
+}
+
+/* ARROW HANDLING */
+.arrow {
+    flex-grow: 0;
+    border: 0;
+    width: var(--arrow-size);
+    background-color: rgba(0, 0, 0, 0.25);
+    margin: var(--img-gap) 0;
+    z-index: 10;
+    transition: background-color 150ms ease-in-out;
+}
+
+.arrow-button {
+    transition: transform 150ms ease-in-out;
+}
+
+.left-arrow {
+    border-radius: 0 1rem 1rem 0;
+}
+
+.right-arrow {
+    border-radius: 1rem 0 0 1rem;
+}
+
+.arrow .arrow-button {
+    background: no-repeat center/90%;
+    width: 100%;
+    height: 100%;
+}
+
+.left-arrow .arrow-button {
+    background-image: url('../img/left-arrow.png');
+}
+
+.right-arrow .arrow-button {
+    background-image: url('../img/right-arrow.png');
+
+}
+
+.arrow:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    background-size: 100%;
+}
+
+.arrow:hover .arrow-button {
+    transform: scale(1.1);
+}
+
+/* =====Slider===== */
