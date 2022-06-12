@@ -14,7 +14,7 @@
 /*  Var declaration  */
 :root {
     --arrow-size: 3rem;
-    --img-gap: .25rem;
+    --img-gap: .7rem;
     --font-color: #e5e5e5;
     --background-color: #141414;
 }
@@ -58,11 +58,12 @@
     display: flex;
     justify-content: center;
     overflow: hidden;
+    padding-bottom: 2rem;
 }
 
 .slider {
     --slider-index: 0;
-    --items-per-screen: 3;
+    --items-per-screen: 4;
     flex: 1 1;
     display: flex;
     transform: translateX(calc(var(--slider-index) * (-100%)));
@@ -71,12 +72,32 @@
 }
 
 /* FILM */
-.slider-element {
+.slider-movie {
     padding: var(--img-gap);
     max-width: calc(100% / var(--items-per-screen));
-    aspect-ratio: 16/9;
+    aspect-ratio: 9/16;
     flex: 0 0 calc(100% / var(--items-per-screen));
     border-radius: 1rem;
+    position: relative;
+}
+
+.slider-image {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+}
+
+.movie-title {
+    padding: 1rem;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.15);
+    transition: background-color 150ms ease-in-out;
+}
+
+.slider-movie:hover > .movie-title {
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* ARROW HANDLING */
