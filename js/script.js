@@ -1,4 +1,5 @@
 "use strict";
+const baseURL = 'http://127.0.0.1:8000/api/v1/';
 const itemsCount = 7;
 
 document.addEventListener('click', elem => {
@@ -96,7 +97,7 @@ async function fetchNextItems(next_url, missingNumber) {
 }
 
 async function getCategorieList() {
-    let fetchResponse = await fetch('http://127.0.0.1:8000/api/v1/genres/')
+    let fetchResponse = await fetch(`${baseURL}genres/`)
         .then(response => jsonResponse(response))
         .then(data => {
             return {
@@ -125,10 +126,13 @@ async function getCategorieList() {
 
 async function getCategorieMovies(movieCategorie) {
     let moviesUrl;
+    let movieNumber;  // this variable is used to get one more film for best movies for the banner.
     if (movieCategorie === 'TheBest') {
-        moviesUrl = 'http://localhost:8000/api/v1/titles/?sort_by=-imdb_score';
+        moviesUrl = `${baseURL}titles?sort_by=-imdb_score`;
+        movieNumber = itemsCount + 1;
     } else {
-        moviesUrl = `http://127.0.0.1:8000/api/v1/titles?genre=${movieCategorie}`;
+        moviesUrl = `${baseURL}titles?genre=${movieCategorie}`;
+        movieNumber = itemsCount
     }
     let fetchResponse = await fetch(moviesUrl)
         .then(response => jsonResponse(response))
@@ -141,8 +145,8 @@ async function getCategorieMovies(movieCategorie) {
     let categorieMovies = fetchResponse.movies;
     let nextUrl = fetchResponse.nextUrl;
 
-    if (categorieMovies.length < itemsCount && nextUrl != null) {
-        let missingMovies = itemsCount - categorieMovies.length;
+    if (categorieMovies.length < movieNumber && nextUrl != null) {
+        let missingMovies = movieNumber - categorieMovies.length;
         let movies = await fetchNextItems(nextUrl, missingMovies);
         for (let i = 0; i < missingMovies; i++) {
             categorieMovies.push(movies[i]);
@@ -152,9 +156,36 @@ async function getCategorieMovies(movieCategorie) {
     return categorieMovies;
 }
 
-async function getMovieDetails(movie) { }
+function getMovieDetails(movieId) {
+    return fetch(`${baseURL}titles/${movieId}`)
+        .then(response => jsonResponse(response));
+}
 
-async function setCategorieSlider(categorieName, categoryMovies) {
+function setBanner(movie) {
+    let header = document.getElementsByTagName('header')[0];
+    let movieDetails = document.createElement('div');
+    let movieTitle = document.createElement('h2');
+    let movieDescription = document.createElement('p');
+    let bannerButton = document.createElement('button');
+    let movieImage = document.createElement('img');
+
+    movieDetails.className = 'best-movie-details';
+    movieTitle.className = 'best-movie-title';
+    movieDescription.className = 'best-movie-description';
+    bannerButton.id = movie.id;
+    bannerButton.className = 'banner-button';
+    movieImage.className = 'best-movie-image';
+
+    movieTitle.innerText = movie.title;
+    movieDescription.innerText = movie.long_description;
+    bannerButton.innerText = 'Play';
+    movieImage.src = movie.image_url;
+
+    movieDetails.append(movieTitle, movieDescription, bannerButton);
+    header.append(movieDetails, movieImage);
+}
+
+function setCategorieSlider(categorieName, categoryMovies) {
     let sliderBloc = document.createElement('div');
     sliderBloc.className = 'categorie';
 
@@ -165,7 +196,7 @@ async function setCategorieSlider(categorieName, categoryMovies) {
     categorieHeader.className = 'categorie-header';
     categorieTitle.className = 'categorie-name';
     progressBar.className = 'progress-bar';
-    categorieTitle.textContent = categorieName;
+    categorieTitle.innerText = categorieName;
     categorieHeader.append(categorieTitle, progressBar);
     sliderBloc.appendChild(categorieHeader);
 
@@ -193,7 +224,7 @@ async function setCategorieSlider(categorieName, categoryMovies) {
         let sliderImage = document.createElement('img');
         let movieTitle = document.createElement('h4');
         movieTitle.className = 'movie-title';
-        movieTitle.textContent = movie.title;
+        movieTitle.innerText = movie.title;
         sliderMovie.className = 'slider-movie';
         sliderMovie.id = movie.id;
         sliderImage.className = 'slider-image';
@@ -228,15 +259,23 @@ async function main() {
     console.log(choosedIndexList);
 
     // Best movies ever :
-    const bestMovies = await getCategorieMovies('TheBest');
-    await setCategorieSlider('Meilleurs films du moment', bestMovies);
+    let bestMovies = await getCategorieMovies('TheBest');
+    let theBestMovieEver = bestMovies.shift();
+    setCategorieSlider('Meilleurs films du moment', bestMovies);
+
+    // BANNER
+    // first the details :
+    theBestMovieEver = await getMovieDetails(theBestMovieEver.id);
+    setBanner(theBestMovieEver)
+    // console.log(theBestMovieEver);
 
     // Categories :
     for (const categorie of randomCategories) {
         const categorieMovies = await getCategorieMovies(categorie);
-        await setCategorieSlider(categorie, categorieMovies);
+        setCategorieSlider(categorie, categorieMovies);
     }
     document.querySelectorAll('.progress-bar').forEach(calculateProgressBarItems);
 }
 
+// document.querySelectorAll('.progress-bar').forEach(calculateProgressBarItems);
 main();
