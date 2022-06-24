@@ -13,6 +13,7 @@
     padding: 0;
     background-color: var(--background-color);
     color: var(--font-color);
+    font-family: sans-serif;
 }
 
 /*  Var declaration  */
@@ -23,8 +24,32 @@
     --background-color: #141414;
 }
 
+/* =====Header nav====== */
+.nav-bar {
+    background-color: #62757f;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.nav-bar * {
+    background-color: inherit;
+    color: black;
+}
+
+.menu {
+    display: flex;
+    width: 20%;
+    justify-content: space-around;
+    list-style: none;
+}
+
+.menu > li, a {
+    text-decoration: none;
+}
+
 /* =====Header banner===== */
 .banner {
+    margin: 0 var(--size-padding);
     height: 60vh;
     max-height: 450px;
     display: flex;
@@ -33,7 +58,6 @@
 
 .best-movie-details {
     /* flex-grow: 1; */
-    margin: var(--size-padding);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -41,7 +65,7 @@
 }
 
 .best-movie-details * {
-    padding: 1rem;
+    padding: .5rem;
 }
 
 .best-movie-title {

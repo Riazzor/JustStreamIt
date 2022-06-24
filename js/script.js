@@ -1,4 +1,3 @@
-"use strict";
 const baseURL = 'http://127.0.0.1:8000/api/v1/';
 const itemsCount = 7;
 
@@ -163,12 +162,14 @@ function getMovieDetails(movieId) {
 
 function setBanner(movie) {
     let header = document.getElementsByTagName('header')[0];
+    let banner = document.createElement('div');
     let movieDetails = document.createElement('div');
     let movieTitle = document.createElement('h2');
     let movieDescription = document.createElement('p');
     let bannerButton = document.createElement('button');
     let movieImage = document.createElement('img');
 
+    banner.className = 'banner';
     movieDetails.className = 'best-movie-details';
     movieTitle.className = 'best-movie-title';
     movieDescription.className = 'best-movie-description';
@@ -182,7 +183,8 @@ function setBanner(movie) {
     movieImage.src = movie.image_url;
 
     movieDetails.append(movieTitle, movieDescription, bannerButton);
-    header.append(movieDetails, movieImage);
+    banner.append(movieDetails, movieImage);
+    header.append(banner);
 }
 
 function setCategorieSlider(categorieName, categoryMovies) {
@@ -264,10 +266,8 @@ async function main() {
     setCategorieSlider('Meilleurs films du moment', bestMovies);
 
     // BANNER
-    // first the details :
     theBestMovieEver = await getMovieDetails(theBestMovieEver.id);
     setBanner(theBestMovieEver)
-    // console.log(theBestMovieEver);
 
     // Categories :
     for (const categorie of randomCategories) {
