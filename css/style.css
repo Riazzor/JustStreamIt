@@ -75,6 +75,7 @@
 
 .banner-button {
     width: 100px;
+    font-weight: 600;
     border-radius: 15% / 50%;
     border: none;
     background-color: #ff151f;
@@ -215,3 +216,114 @@
 }
 
 /* =====Slider===== */
+
+/* =====Modal===== */
+#modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    transition: display 150ms ease-in-out;
+}
+
+.modal-content {
+    background-color: var(--background-color);
+    margin: 10% auto auto;
+    width: 70%;
+    box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.8), 0px 5px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+}
+
+#movie-modal{
+    padding: 2rem;
+    display: flex;
+    column-gap: .8rem;
+}
+#movie-modal span {
+    text-decoration: underline;
+}
+
+#movie-modal-details{
+    display: grid;
+    gap: .5rem;
+    grid-template-columns: repeat(2, 1fr);
+    flex-direction: column;
+    justify-content: space-between;
+    grid-template-areas: 
+        "title title"
+        "genre genre"
+        "date duration"
+        "note imdb_note"
+        "director director"
+        "actors actors"
+        "description description"
+        "description description"
+        "income countries";
+}
+
+#movie-modal-image{
+    aspect-ratio: 9/16;
+    align-self: center;
+    max-width: 40%;
+    max-height: 60vh;
+}
+.movie-modal-title{
+    text-align: center;
+    grid-area: title;
+    font-size: 2rem;
+}
+.movie-modal-genre{
+    grid-area: genre;
+}
+.movie-modal-date{
+    grid-area: date;
+}
+.movie-modal-note{
+    grid-area: note;
+}
+.movie-modal-imdb{
+    grid-area: imdb_note;
+}
+.movie-modal-director{
+    grid-area: director;
+}
+.movie-modal-actors{
+    grid-area: actors;
+}
+.movie-modal-duration{
+    grid-area: duration;
+}
+.movie-modal-countries{
+    grid-area: countries;
+}
+.movie-modal-income{
+    grid-area: income;
+}
+.movie-modal-description{
+    text-align: justify;
+    grid-area: description;
+    padding: 1rem;
+}
+
+#close-modal {
+    padding: 0.1em;
+    color: #aaa;
+    font-size: 2rem;
+    line-height: 1.5rem;
+    align-self: flex-end;
+}
+
+#close-modal:hover {
+    color: white;
+    cursor: pointer;
+}
+
+.block-scroll { /*to body*/
+    overflow: hidden;
+}
